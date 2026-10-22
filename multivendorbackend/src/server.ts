@@ -6,10 +6,10 @@ Version: 1.0.0
 Copyright: Copyright (c) 2026 marcus. All rights reserved.
  */
 
-const mongoose = require("mongoose");
-const dbConnection = require("./config/db");
-const app = require("./app");
-const env = require("./config/env");
+import mongoose from 'mongoose';
+import { dbConnection} from './config/db';
+import app from"./app";
+import env from './config/env';
 
 async function start() {
   await dbConnection;
