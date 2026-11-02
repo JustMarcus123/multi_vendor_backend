@@ -19,6 +19,11 @@ app.use(helmet());
 app.use(express.json({ limit: "1mb" }));
 app.use("/api/v1", routes);
 
+app.use(cors({
+  origin: env.clientOrigin,
+  credentials: true
+}));
+
 app.use(cors({ origin: env.clientOrigin, credentials: true }));
 if (env.nodeEnv !== "test") app.use(morgan("dev"));
 

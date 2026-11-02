@@ -1,23 +1,17 @@
-/**
- * Author: Mangkholen chongloi(marcus)
-Date Created: 2026-10-22
-Description: Handles the database connection and verifies server status.
-Version: 1.0.0
-Copyright: Copyright (c) 2026 marcus. All rights reserved.
- */
-
-import mongoose from 'mongoose';
-import { dbConnection} from './config/db';
-import app from"./app";
-import env from './config/env';
+import mongoose from "mongoose";
+import { dbConnection } from "./config/db";
+import app from "./app";
+import env from "./config/env";
 
 async function start() {
-  await dbConnection;
-  console.log("Mongodb connected");
+  await dbConnection();
+
+  console.log("MongoDB connected");
 
   const server = app.listen(env.port, () => {
-    console.log(`API running in port : "http://localhost:${env.port}/api/v1 `);
+    console.log(`API running on http://localhost:${env.port}/api/v1`);
   });
+
 
   async function shutDown() {
     server.close(async () => {
@@ -31,6 +25,6 @@ async function start() {
 }
 
 start().catch((err) => {
-  console.error("failed to start", err.message);
+  console.error("Failed to start:", err.message);
   process.exit(1);
 });
