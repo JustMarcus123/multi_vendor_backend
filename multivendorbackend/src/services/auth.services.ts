@@ -11,6 +11,7 @@ interface PublicUser {
   id: string;
   name: string;
   email: string;
+  role:string
 }
 
 interface authUser{
@@ -22,11 +23,13 @@ function publicUser(u: {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
+  role:string;
 }): PublicUser {
   return {
     id: String(u._id),
     name: u.name,
     email: u.email,
+    role: u.role
   };
 }
 
@@ -34,6 +37,7 @@ function publicUser(u: {
 export async function register({
   name,
   email,
+  role,
   password,
 }: RegisterInput): Promise<authUser> {
   if (await User.exists({ email })) {
@@ -42,10 +46,14 @@ export async function register({
 
   const passwordHash = await bcrypt.hash(password, 12);
 
+  
   try {
+    // const selectedRoles = data.role ?? "customer"
+
     const user = await User.create({
       name,
       email,
+      role: role??  "customer",
       password: passwordHash,
     });
     return {
