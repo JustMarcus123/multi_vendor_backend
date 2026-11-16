@@ -1,8 +1,9 @@
 import { User } from '../models/Users';
 import bcrypt from "bcryptjs";
 import httpError from "../utils/httpErrors";
-import type { RegisterInput } from '../validators/authValidators';
+import type { LoginInput, RegisterInput } from '../validators/authValidators';
 import { Types } from 'mongoose';
+import { email } from 'zod';
 
 
 
@@ -15,6 +16,7 @@ interface PublicUser {
 interface authUser{
     user: PublicUser
 }
+
 
 function publicUser(u: {
   _id: Types.ObjectId | string;
@@ -55,6 +57,30 @@ export async function register({
     }
     throw error;
   }
+}
+
+export async function login({email,password}: LoginInput) :Promise<authUser>{
+
+  const user = await(User.findOne({email}));
+
+  if(!user){
+    throw new httpError(402 ,"Invalid email or password");
+
+  }
+
+  //validate the entered password with the hashed password
+  const isPasswordValid = await  bcrypt.compare(
+    password,
+    user.password
+  )
+
+  if(!isPasswordValid){
+    throw new httpError(401, "incorrect email or password");
+  }
+  return{
+    user: publicUser(user)
+  }
+
 }
 
 

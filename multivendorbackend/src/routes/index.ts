@@ -24,7 +24,10 @@ router.get("/health", (_req, res)=>{
     res.json({status:"ok"});
 })
 
-// authentication routes
+// Register route
 router.post("/auth/register", authLimiter, validate(AuthV.RegisterSchema),asyncHandler(auth.register) )
+
+//login route
+router.post("/auth/login",authLimiter, validate(AuthV.LoginSchema), asyncHandler(auth.login) )
 
 export default router;

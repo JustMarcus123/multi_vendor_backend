@@ -14,3 +14,7 @@ export async function register(req:Request, res:Response){
     res.status(201).json(await authService.register(req.body));
 
 }
+
+export async function login(req:Request, res:Response){
+    res.status(201).json(await authService.login(req.body))
+}
