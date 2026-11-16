@@ -1,5 +1,6 @@
 
 import { Schema, model, InferSchemaType } from "mongoose";
+import { ROLES } from '../enum/Role';
 
 const userSchema = new Schema({
   name: {
@@ -13,6 +14,12 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
+  },
+  role:{
+    type: String ,
+    enum:ROLES,
+    required: true,
+    // default:"customer"
   },
   password: {
     type: String,
