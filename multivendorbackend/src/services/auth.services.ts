@@ -87,10 +87,18 @@ export async function login({email,password}: LoginInput) :Promise<authUser>{
   }
   return{
     user: publicUser(user)
-  }
+  };
 
 }
 
+
+export async function getUserById(userId: string): Promise<authUser> {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new httpError(404, "User not found");
+  }
+  return { user: publicUser(user) };
+}
 
 
 

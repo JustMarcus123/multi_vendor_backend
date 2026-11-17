@@ -1,33 +1,49 @@
+
 import { Router } from "express";
 import rateLimit from "express-rate-limit";
-import * as AuthV from "../validators/authValidators"
+
+import * as AuthV from "../validators/authValidators";
 import validate from "../middleware/validate";
 import asyncHandler from "../utils/asyncHandlers";
-import * as auth from "../controllers/auth.controllers"
+import * as auth from "../controllers/auth.controllers";
+import { authenticate } from "../middleware/authenticate";
 
 const router = Router();
 
-router.get('/test', (req, res) => {
-  res.json({ message: 'Router is working!' });
-});
-
-//let's create limits on credential entry per timeframe use rate limit
- const authLimiter = rateLimit({
-      windowMs: 15 * 60 * 1000,
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
   limit: 50,
   standardHeaders: true,
   legacyHeaders: false,
- } )
+});
 
+router.get("/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
 
-router.get("/health", (_req, res)=>{
-    res.json({status:"ok"});
-})
+router.post(
+  "/auth/register",
+  authLimiter,
+  validate(AuthV.RegisterSchema),
+  asyncHandler(auth.register)
+);
 
-// Register route
-router.post("/auth/register", authLimiter, validate(AuthV.RegisterSchema),asyncHandler(auth.register) )
+router.post(
+  "/auth/login",
+  authLimiter,
+  validate(AuthV.LoginSchema),
+  asyncHandler(auth.login)
+);
 
-//login route
-router.post("/auth/login",authLimiter, validate(AuthV.LoginSchema), asyncHandler(auth.login) )
+router.get(
+  "/auth/me",
+  authenticate,
+  asyncHandler(auth.me)
+);
+
+router.post(
+  "/auth/logout",
+  asyncHandler(auth.logout)
+);
 
 export default router;

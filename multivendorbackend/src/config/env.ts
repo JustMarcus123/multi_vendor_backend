@@ -1,20 +1,19 @@
-import 'dotenv/config';
+import "dotenv/config";
 
-const required = ["MONGODB_URI"] as const; //later few more things will be added for like jwt secret key and all
-
-for (const key of required) {
-  if (!process.env[key]) {
-    throw new Error(`Missing required env var: ${key}`);
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required env var: ${name}`);
   }
+  return value;
 }
 
-const env =  {
+const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: Number(process.env.PORT) || 4000,
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
-  mongoUri: process.env.MONGODB_URI as string,
-
-  //later few exports will be made for jwt secrets and all
+  mongoUri: requireEnv("MONGODB_URI"),
+  jwtAccessSecret: requireEnv("JWT_ACCESS_SECRET"),
 };
 
 export default env;

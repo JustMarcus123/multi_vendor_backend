@@ -7,7 +7,7 @@ import { ROLES } from '../enum/Role';
 export const RegisterSchema = z.object({
      name: z.string().trim().min(2).max(80),
   email: z.string().trim().toLowerCase().email(),
-  role: z.enum(ROLES),
+  role: z.enum(ROLES).default("customer"),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')

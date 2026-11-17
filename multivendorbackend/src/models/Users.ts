@@ -19,7 +19,7 @@ const userSchema = new Schema({
     type: String ,
     enum:ROLES,
     required: true,
-    // default:"customer"
+    default:"customer"
   },
   password: {
     type: String,
