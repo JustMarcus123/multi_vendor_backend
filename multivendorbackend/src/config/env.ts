@@ -14,6 +14,14 @@ const env = {
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
   mongoUri: requireEnv("MONGODB_URI"),
   jwtAccessSecret: requireEnv("JWT_ACCESS_SECRET"),
+
+
+    // s3
+  bucketName: requireEnv("BUCKET_NAME"),
+  bucketRegion: requireEnv("BUCKET_REGION"),
+  accessKey: requireEnv("ACCESS_KEY"),
+  secretAccessKey: requireEnv("SECRET_ACCESS_KEY"),
+
 };
 
 export default env;
