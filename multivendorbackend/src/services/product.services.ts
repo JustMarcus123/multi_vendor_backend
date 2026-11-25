@@ -3,12 +3,14 @@ import httpError from "../utils/httpErrors";
 import { uploadProductImage, deleteImage, getImageUrl } from "./s3.services";
 
 
+
+
 async function withImageUrls(p: any) {
   const imageUrls = await Promise.all(p.images.map(getImageUrl));
   return {
     id: String(p._id),
     name: p.name,
-    description: p.description,
+    category:p.category,
     price: p.price,
     stock: p.stock,
     images: imageUrls,
@@ -17,7 +19,7 @@ async function withImageUrls(p: any) {
 
 export async function createProduct(
   vendorId: string,
-  input: { name: string; description: string; price: number; stock: number },
+  input: { name: string; Category: string; price: number; stock: number },
   files: Express.Multer.File[]
 ) {
   if (files.length === 0) throw new httpError(400, "At least one image is required");

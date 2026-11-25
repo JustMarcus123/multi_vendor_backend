@@ -26,23 +26,19 @@ function createAccessToken(userId: string): string {
   return jwt.sign({ sub: userId }, env.jwtAccessSecret, { expiresIn: "15m" });
 }
 
-
-export async function register(req:Request, res:Response){
-
-    res.status(201).json(await authService.register(req.body));
-
+export async function register(req: Request, res: Response) {
+  res.status(201).json(await authService.register(req.body));
 }
 
-export async function login(req:Request, res:Response){
-    const result = await authService.login(req.body);
+export async function login(req: Request, res: Response) {
+  const result = await authService.login(req.body);
 
-const token = createAccessToken(result.user.id);
-res.cookie(COOKIE_NAME, token,cookieOptions);
+  const token = createAccessToken(result.user.id);
+  res.cookie(COOKIE_NAME, token, cookieOptions);
 
-res.status(200).json({
-    user:result.user,
-})
-
+  res.status(200).json({
+    user: result.user,
+  });
 }
 
 export async function me(req: AuthRequest, res: Response) {
